@@ -13,13 +13,24 @@ import java.util.stream.Collectors;
 
 @WebServlet("/customer")
 public class MimeTypes extends HttpServlet {
-    @Override
+    //      read text / plain data from http request body
+   /* @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //      read text / plain data from http request body
+
         String body = new BufferedReader(new InputStreamReader(
                 req.getInputStream()))
                 .lines().collect(Collectors.joining("/n"));
         resp.setContentType("text/plain");
         resp.getWriter().write(body);
+    }*/
+
+    /*Read x-www-form-urlencoded data from a http req*/
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String address = req.getParameter("address");
+
+        resp.setContentType("text/plain");
+        resp.getWriter().println(name + " " + address);
     }
 }
