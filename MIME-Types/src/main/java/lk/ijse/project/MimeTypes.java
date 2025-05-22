@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
 /*@MultipartConfig*/
-@WebServlet("/")
+@WebServlet("/customer")
 public class MimeTypes extends HttpServlet {
     //      read text / plain data from http request body
    /* @Override
