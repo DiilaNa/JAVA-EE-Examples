@@ -1,5 +1,7 @@
 package lk.ijse.project;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,8 +14,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
-@MultipartConfig
-@WebServlet("/customer")
+
+/*@MultipartConfig*/
+@WebServlet("/")
 public class MimeTypes extends HttpServlet {
     //      read text / plain data from http request body
    /* @Override
@@ -37,7 +40,7 @@ public class MimeTypes extends HttpServlet {
     }*/
 
 
-    /*Read multipart/form data from a http request*/
+  /*  *//*Read multipart/form data from a http request*//*
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
@@ -47,5 +50,17 @@ public class MimeTypes extends HttpServlet {
         resp.setContentType("text/plain");
         resp.getWriter().write(name + " " + filename);
 
+    }*/
+
+    /*Read JSON Object from a Http Request*/
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(req.getReader());
+        String name = jsonNode.get("name").asText();
+        String address = jsonNode.get("address").asText();
+
+        resp.setContentType("application/json");
+        resp.getWriter().write(name + " " + address);
     }
 }
