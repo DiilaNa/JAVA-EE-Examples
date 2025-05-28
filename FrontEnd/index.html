@@ -42,40 +42,103 @@
 
 <script src="jquery-3.7.1.min.js"></script>
 <script>
-    $('#getAllEvents').on('click',function (){
-        $.ajax({
-            url:'http://localhost:8080/App1_Web_exploded/event',
-            method:'GET',
-            success:function (response){
-                alert('Data Fetched')
-                response.map( (res) => {
-                    const h3 = document.createElement('h3');
-                    const h5 = document.createElement('h5');
-                    const p = document.createElement('p');
-                    const p2 = document.createElement('p');
+    const apiUrl = 'http://localhost:8080/App1_war_exploded/event';
 
-                    p2.innerHTML = res.id;
-                    h3.innerHTML = res.name;
-                    p.innerHTML = res.date;
-                    h5.innerHTML = res.time;
-                    console.log(res);
-                    $(".events").append(h3, h5, p2, p);
-                })
+    function refreshTable(data) {
+        const tbody = $('#eventTable tbody');
+        tbody.empty();
+        data.forEach(event => {
+            tbody.append(`
+                <tr>
+                    <td>${event.eid}</td>
+                    <td>${event.ename}</td>
+                    <td>${event.edescription}</td>
+                    <td>${event.edate}</td>
+                    <td>${event.eplace}</td>
+                </tr>
+            `);
+        });
+    }
+
+    $('#getAllEvents').click(function () {
+        $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            success: function (response) {
+                refreshTable(response);
             },
-            error:function (error){
-                alert("Error")
+            error: function () {
+                alert("Error fetching data");
             }
-
-        })
-
-
+        });
     });
-    $('#save').onclick(function () {
+
+    $('#createEvent').click(function () {
+        const event = {
+            eid:$('#eid').val(),
+            ename: $('#ename').val(),
+            edescription: $('#edescription').val(),
+            edate: $('#edate').val(),
+            eplace: $('#eplace').val()
+        };
         $.ajax({
-            url:'http://localhost:8080/App1_Web_exploded/event',
-            method: 'SAVE'
-        })
-    })
+            url: apiUrl,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(event),
+            success: function (response) {
+                alert('Event created');
+                $('#getAllEvents').click();
+            },
+            error: function () {
+                alert("Error creating event");
+            }
+        });
+    });
+
+    $('#updateEvent').click(function () {
+        const event = {
+            eid: $('#eid').val(),
+            ename: $('#ename').val(),
+            edescription: $('#edescription').val(),
+            edate: $('#edate').val(),
+            eplace: $('#eplace').val()
+        };
+        $.ajax({
+            url: apiUrl,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(event),
+            success: function (response) {
+                alert('Event updated');
+                $('#getAllEvents').click();
+            },
+            error: function () {
+                alert("Error updating event");
+            }
+        });
+    });
+
+    $('#deleteEvent').click(function () {
+        const eid = $('#eid').val();
+        if (!eid) {
+            alert("Please enter Event ID to delete.");
+            return;
+        }
+        $.ajax({
+            url: apiUrl,
+            method: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify({ eid }),
+            success: function (response) {
+                alert('Event deleted');
+                $('#getAllEvents').click();
+            },
+            error: function () {
+                alert("Error deleting event");
+            }
+        });
+    });
 </script>
 </body>
 </html>
