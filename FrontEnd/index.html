@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Manage</title>
+    <style>
+        #getAllEvents{
+            width: 80px;
+            height: 40px;
+            background-color: lightblue;
+        }
+        .container{
+            display: flex;
+            gap: 20px;
+
+        }
+    </style>
+</head>
+<body>
+<button id="getAllEvents">Click me</button>
+<button id="save">Save</button>
+<div class="container">
+    <div>
+        <h3>Id</h3><input type="text" id="getID">
+        <h3>Name</h3><input type="text">
+    </div>
+    <div>
+        <h3>Date</h3><input type="text">
+        <h3>Time</h3><input type="text">
+    </div>
+</div>
+<div class="events">
+
+</div>
+
+<script src="jquery-3.7.1.min.js"></script>
+<script>
+    $('#getAllEvents').on('click',function (){
+        $.ajax({
+            url:'http://localhost:8080/App1_Web_exploded/event',
+            method:'GET',
+            success:function (response){
+                alert('Data Fetched')
+                response.map( (res) => {
+                    const h3 = document.createElement('h3');
+                    const h5 = document.createElement('h5');
+                    const p = document.createElement('p');
+                    const p2 = document.createElement('p');
+
+                    p2.innerHTML = res.id;
+                    h3.innerHTML = res.name;
+                    p.innerHTML = res.date;
+                    h5.innerHTML = res.time;
+                    console.log(res);
+                    $(".events").append(h3, h5, p2, p);
+                })
+            },
+            error:function (error){
+                alert("Error")
+            }
+
+        })
+
+
+    });
+    $('#save').onclick(function () {
+        $.ajax({
+            url:'http://localhost:8080/App1_Web_exploded/event',
+            method: 'SAVE'
+        })
+    })
+</script>
+</body>
+</html>

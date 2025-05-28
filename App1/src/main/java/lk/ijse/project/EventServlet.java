@@ -1,13 +1,11 @@
 package lk.ijse.project;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,10 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet("/event")
-public class Main extends HttpServlet {
+public class EventServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventDB", "root", "Ijse@1234");
@@ -37,8 +35,13 @@ public class Main extends HttpServlet {
                 elist.add(events);
             }
             resp.setContentType("application/json");
+            resp.addHeader("Access-Control-Allow-Origin", "*");
+            resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+            resp.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+            resp.addHeader("Access-Control-Max-Age", "1728000");
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(resp.getWriter(), elist);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
