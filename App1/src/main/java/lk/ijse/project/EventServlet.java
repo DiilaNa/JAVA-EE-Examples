@@ -1,4 +1,4 @@
-package org.example;
+package lk.ijse.project;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/event")
+@WebServlet("/main")
 public class EventServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,7 +23,7 @@ public class EventServlet extends HttpServlet {
             Connection connection= DriverManager.getConnection
                     ("jdbc:mysql://localhost:3306/eventdb", "root","Ijse@1234");
             ResultSet resultSet=connection
-                    .prepareStatement("select * from event").executeQuery();
+                    .prepareStatement("select * from events").executeQuery();
             List<Map<String,String>> elist=new ArrayList<>();
             while (resultSet.next()) {
 
@@ -57,7 +57,7 @@ public class EventServlet extends HttpServlet {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventdb", "root", "Ijse@1234");
 
             PreparedStatement stmt = connection.prepareStatement(
-                    "INSERT INTO event (eid,ename, edescription, edate, eplace) VALUES (?, ?, ?, ?,?)"
+                    "INSERT INTO events (eid,ename, edescription, edate, eplace) VALUES (?, ?, ?, ?,?)"
             );
             stmt.setString(1, event.get("eid"));
             stmt.setString(2, event.get("ename"));
@@ -85,7 +85,7 @@ public class EventServlet extends HttpServlet {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventdb", "root", "Ijse@1234");
 
             PreparedStatement stmt = connection.prepareStatement(
-                    "UPDATE event SET ename = ?, edescription = ?, edate = ?, eplace = ? WHERE eid = ?"
+                    "UPDATE events SET ename = ?, edescription = ?, edate = ?, eplace = ? WHERE eid = ?"
             );
             stmt.setString(1, event.get("ename"));
             stmt.setString(2, event.get("edescription"));
@@ -119,7 +119,7 @@ public class EventServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventdb", "root", "Ijse@1234");
 
-            PreparedStatement stmt = connection.prepareStatement("DELETE FROM event WHERE eid = ?");
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM events WHERE eid = ?");
             stmt.setString(1, eid);
 
             int rows = stmt.executeUpdate();
