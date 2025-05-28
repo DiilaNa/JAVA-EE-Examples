@@ -9,29 +9,36 @@
             height: 40px;
             background-color: lightblue;
         }
-        .container{
-            display: flex;
-            gap: 20px;
-
-        }
     </style>
 </head>
 <body>
-<button id="getAllEvents">Click me</button>
-<button id="save">Save</button>
-<div class="container">
-    <div>
-        <h3>Id</h3><input type="text" id="getID">
-        <h3>Name</h3><input type="text">
-    </div>
-    <div>
-        <h3>Date</h3><input type="text">
-        <h3>Time</h3><input type="text">
-    </div>
-</div>
-<div class="events">
 
-</div>
+<h2>Event Manager</h2>
+
+<h3>Create / Update Event</h3>
+<input type="text" id="eid" placeholder="Event ID (for update/delete)">
+<input type="text" id="ename" placeholder="Event Name">
+<input type="text" id="edescription" placeholder="Description">
+<input type="date" id="edate">
+<input type="text" id="eplace" placeholder="Place">
+<button id="createEvent">Create</button>
+<button id="updateEvent">Update</button>
+<button id="deleteEvent">Delete</button>
+
+<h3>All Events</h3>
+<button id="getAllEvents">Get All</button>
+<table id="eventTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Place</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
 <script src="jquery-3.7.1.min.js"></script>
 <script>
