@@ -239,10 +239,11 @@
             return;
         }
         $.ajax({
-            url: apiUrl,
+            url: "http://localhost:8080/App1_Web_exploded/www?eid="+eid,
             method: 'DELETE',
-            contentType: 'application/json',
-            data: JSON.stringify({ eid }),
+          /*  contentType: 'application/json',
+            data: JSON.stringify({ eid }),*/
+
             success: function (response) {
                 Swal.fire({
                     position: "center",
