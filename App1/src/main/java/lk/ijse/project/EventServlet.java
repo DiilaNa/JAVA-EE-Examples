@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/main")
+@WebServlet("/www")
 public class EventServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,11 +22,9 @@ public class EventServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection= DriverManager.getConnection
                     ("jdbc:mysql://localhost:3306/eventdb", "root","Ijse@1234");
-            ResultSet resultSet=connection
-                    .prepareStatement("select * from events").executeQuery();
+            ResultSet resultSet=connection.prepareStatement("select * from events").executeQuery();
             List<Map<String,String>> elist=new ArrayList<>();
             while (resultSet.next()) {
-
                 Map<String,String> event=new HashMap<String,String>();
                 event.put("eid",resultSet.getString("eid"));
                 event.put("ename",resultSet.getString("ename"));
@@ -34,6 +32,7 @@ public class EventServlet extends HttpServlet {
                 event.put("edate",resultSet.getString("edate"));
                 event.put("eplace",resultSet.getString("eplace"));
                 elist.add(event);
+
             }
             resp.setContentType("application/json");
             ObjectMapper mapper = new ObjectMapper();
@@ -48,6 +47,10 @@ public class EventServlet extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.setStatus(HttpServletResponse.SC_OK);
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> event = mapper.readValue(req.getInputStream(), Map.class);
@@ -76,6 +79,9 @@ public class EventServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> event = mapper.readValue(req.getInputStream(), Map.class);
@@ -111,6 +117,11 @@ public class EventServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        /*resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+*/
+        doOptions( req , resp);
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> body = mapper.readValue(req.getInputStream(), Map.class);
         String eid = body.get("eid");
