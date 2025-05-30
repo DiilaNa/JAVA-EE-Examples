@@ -112,6 +112,9 @@ public class EventServlet extends HttpServlet {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+
+
+
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventdb", "root", "Ijse@1234");
 
             PreparedStatement stmt = connection.prepareStatement("DELETE FROM events WHERE eid = ?");

@@ -105,6 +105,7 @@ public class DBCPServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> body = mapper.readValue(req.getInputStream(), Map.class);
         String eid = body.get("eid");
